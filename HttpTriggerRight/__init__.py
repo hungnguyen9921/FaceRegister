@@ -40,6 +40,7 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         frame = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
         resized_frame = cv2.resize(frame,(image_width,image_height))
         rects = faceDetect.detectFaces(resized_frame, USER_BRIGHT_INCREMENT, USER_FACE_DETECTION_THRESHOLD)
+        status = None
         if (len(rects) == 1):
             img_points = landmarkDetect.detectLandmarkForRegister(resized_frame, rects)
             if(i == 0):
@@ -58,10 +59,6 @@ def main(req: func.HttpRequest) -> func.HttpResponse:
         pass
     
     if status :
-        return func.HttpResponse(json.dumps({
-            'success': True
-        }))
+        return func.HttpResponse(status_code=200)
     else:
-        return func.HttpResponse(json.dumps({
-            'success': False
-        }))
+        return func.HttpResponse(status_code=204)
